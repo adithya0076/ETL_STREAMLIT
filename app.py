@@ -2,7 +2,6 @@ import psycopg2
 import streamlit as st
 import pandas as pd
 
-# Database connection setup
 def get_connection():
     conn = psycopg2.connect(database="k9_db",
                             host="localhost",
@@ -11,7 +10,6 @@ def get_connection():
                             port="5432")
     return conn
 
-# Fetch facts from the database based on category
 def fetch_facts(category=None):
     conn = get_connection()
     cursor = conn.cursor()
@@ -26,18 +24,14 @@ def fetch_facts(category=None):
     conn.close()
     return data
 
-# Streamlit app
 def main():
-    st.title("K9 Facts Viewer")
+    st.title("K9 Care")
 
-    # Select category type
     category_type = st.selectbox("Select Category Type", ["All", "with_numbers", "without_numbers"])
 
-    # Fetch facts based on selected category type
     data_tuples = fetch_facts(category_type)
     df = pd.DataFrame(data_tuples, columns=['fact', 'category'])
 
-    # Display facts under each category
     if not df.empty:
         if category_type == "All":
             categories = df['category'].unique()
@@ -52,7 +46,7 @@ def main():
             for fact in category_facts:
                 st.write(f"- {fact}")
     else:
-        st.write("No facts found for the selected category.")
+        st.write("No facts found in this category")
 
 if __name__ == "__main__":
     main()
