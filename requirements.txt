@@ -1,0 +1,4 @@
+streamlit
+psycopg
+sqlalchemy
+psycopg-binary
